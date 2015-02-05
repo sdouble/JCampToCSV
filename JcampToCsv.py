@@ -6,6 +6,7 @@ class BoxWindow(Gtk.Window):
 	def __init__(self):
 		Gtk.Window.__init__(self, title="Jcamp to CSV Converter")
 		self.set_border_width(10)
+		self.set_default_size(275,50)
 		box=Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=6)
 		self.add(box)
 
