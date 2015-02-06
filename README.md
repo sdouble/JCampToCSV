@@ -4,4 +4,6 @@ _Requires Gtk+3_.
 
 Python script that converts a JCamp-DX NIR spectra file into a CSV (comma delimited text file).
 
-Simple form consists of textboxes ([Gtk.Entry()](https://developer.gnome.org/gtk3/stable/GtkEntry.html)) for source and destination file paths and buttons (<a href="https://developer.gnome.org/gtk3/stable/GtkButton.html">Gtk.Button()</a>) to browse for each (![Gtk.FileChooserDialog()](https://developer.gnome.org/gtk3/stable/GtkFileChooserDialog.html)).
+Simple form consists of textboxes ([Gtk.Entry()](https://developer.gnome.org/gtk3/stable/GtkEntry.html)) for source and destination file paths and buttons ([Gtk.Button()](https://developer.gnome.org/gtk3/stable/GtkButton.html) to browse for each ([Gtk.FileChooserDialog()](https://developer.gnome.org/gtk3/stable/GtkFileChooserDialog.html)).
+
+<img src="http://www.imagesup.net/?di=1014232623992">
