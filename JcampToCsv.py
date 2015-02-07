@@ -1,4 +1,7 @@
+#! /usr/bin/env python
+
 from gi.repository import Gtk
+from gi.repository import Gdk
 from convert import convert
 import threading
 
@@ -49,8 +52,8 @@ class BoxWindow(Gtk.Window):
 	def getFileOpen(self, button):
 		dialog=Gtk.FileChooserDialog("Select a file to convert", self,
 	  	Gtk.FileChooserAction.OPEN,(
-	  		Gtk.STOCK_CANCEL, Gtk.ResponseType.CANCEL,
-	  		Gtk.STOCK_OPEN, Gtk.ResponseType.OK))
+	  		"_Cancel", Gtk.ResponseType.CANCEL,
+	  		"_Open", Gtk.ResponseType.OK))
 		response=dialog.run()
 		if response == Gtk.ResponseType.OK:
 			filename=dialog.get_filename()
@@ -61,8 +64,8 @@ class BoxWindow(Gtk.Window):
 	def getFileSave(self, button):
 		dialog=Gtk.FileChooserDialog("Select a destination file", self,
 	  	Gtk.FileChooserAction.SAVE,(
-	  		Gtk.STOCK_CANCEL, Gtk.ResponseType.CANCEL,
-	  		Gtk.STOCK_SAVE, Gtk.ResponseType.OK))
+	  		"_Cancel", Gtk.ResponseType.CANCEL,
+	  		"_Save", Gtk.ResponseType.OK))
 		response=dialog.run()
 		if response == Gtk.ResponseType.OK:
 			filename=dialog.get_filename()
@@ -75,8 +78,8 @@ class BoxWindow(Gtk.Window):
 	
 	def convertButton_clicked(self, button):
 		if self.txtFileSave.get_text() and self.txtFileOpen.get_text():
-			print("Converting:", self.txtFileSave.get_text())
-			print("Saving as:", self.txtFileOpen.get_text())
+			print("Converting:", self.txtFileOpen.get_text())
+			print("Saving as:", self.txtFileSave.get_text())
 			threading.Thread(target=convert,
 				args=(self, self.txtFileOpen.get_text(), self.txtFileSave.get_text())
 			).start()
