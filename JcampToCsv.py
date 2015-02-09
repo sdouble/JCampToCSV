@@ -2,46 +2,42 @@ from gi.repository import Gtk
 from convert import convert
 import threading
 
-class BoxWindow(Gtk.Window):
+class GridWindow(Gtk.Window):
 	def __init__(self):
 		Gtk.Window.__init__(self, title="Jcamp to CSV Converter")
 		self.set_border_width(10)
 		self.set_default_size(400,50)
-		mainBox=Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=6)
-		self.add(mainBox)
 
-		# openBox
-		openBox=Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL, spacing=3)
-		mainBox.pack_start(openBox,False,False,0)
+		mainGrid=Gtk.Grid()
+		mainGrid.set_column_spacing(5)
+		mainGrid.set_row_spacing(5)
+		mainGrid.set_row_homogeneous(True)
+		mainGrid.set_column_homogeneous(True)
+
+		self.add(mainGrid)
 
 		self.txtFileOpen=Gtk.Entry()
-		openBox.pack_start(self.txtFileOpen,True,True,0)
-
-		self.buttonOpen=Gtk.Button(label="Convert")
-		self.buttonOpen.connect("clicked", self.getFileOpen)
-		openBox.pack_end(self.buttonOpen,False,False,0)
-
-		# saveBox
-		saveBox=Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL, spacing=3)
-		mainBox.pack_start(saveBox,False,False,0)
-
 		self.txtFileSave=Gtk.Entry()
-		saveBox.pack_start(self.txtFileSave,True,True,0)
-		
-		self.buttonSave=Gtk.Button(label="Save  As")
-		self.buttonSave.connect("clicked", self.getFileSave)
-		saveBox.pack_start(self.buttonSave,False,False,0)
-
+		self.buttonOpen=Gtk.Button(label="JCamp File")
+		self.buttonSave=Gtk.Button(label="CSV File")
 		self.buttonConvert=Gtk.Button(label="Convert")
-		self.buttonConvert.connect("clicked", self.convertButton_clicked)
-		mainBox.pack_start(self.buttonConvert,False,False,0)
-
 		self.progress=Gtk.ProgressBar()
-		self.progress.set_text("some text")
-		mainBox.pack_start(self.progress,False,True,0)
+
+		mainGrid.attach(self.txtFileOpen,0,0,2,1)
+		mainGrid.attach(self.buttonOpen,2,0,1,1)
+
+		mainGrid.attach(self.txtFileSave,0,1,2,1)
+		mainGrid.attach(self.buttonSave,2,1,1,1)
+
+		mainGrid.attach(self.buttonConvert,0,2,3,1)
+		mainGrid.attach(self.progress,0,3,3,1)
+
+		self.buttonOpen.connect("clicked", self.getFileOpen)
+		self.buttonSave.connect("clicked", self.getFileSave)
+		self.buttonConvert.connect("clicked", self.convertButton_clicked)
 
 	def updateProgressBar(self, currentProgress, totalToProcess):
-		self.progress.set_fraction(currentProgress/totalToProcess)
+		self.txtFileOpen.set_fraction(currentProgress/totalToProcess)
 
 	def updateWinText(self, text):
 		self.set_title(text)
@@ -55,6 +51,7 @@ class BoxWindow(Gtk.Window):
 		if response == Gtk.ResponseType.OK:
 			filename=dialog.get_filename()
 			self.txtFileOpen.set_text(filename)
+			self.txtFileOpen.do_move_cursor(self.txtFileOpen,0,100000,False)
 			dialog.destroy()
 		dialog.destroy()
 	
@@ -67,6 +64,7 @@ class BoxWindow(Gtk.Window):
 		if response == Gtk.ResponseType.OK:
 			filename=dialog.get_filename()
 			self.txtFileSave.set_text(filename)
+			self.txtFileSave.do_move_cursor(self.txtFileSave,0,100000,False)
 			dialog.destroy()
 		dialog.destroy()
 	
@@ -81,8 +79,7 @@ class BoxWindow(Gtk.Window):
 				args=(self, self.txtFileOpen.get_text(), self.txtFileSave.get_text())
 			).start()
 
-win=BoxWindow()
+win=GridWindow()
 win.connect("delete-event", Gtk.main_quit)
 win.show_all()
 Gtk.main()
-win.set_resizable(False)
